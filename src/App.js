@@ -1,23 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import questions from "./data";
 
 function App() {
+  const [isactive, setisactive] = useState([]);
+  const [checkbox, setcheckbox] = useState(true);
+  const handleclick = (id) => {
+    if (checkbox) {
+      if (isactive.includes(id)) {
+        console.log(true);
+        let isactivefilter = isactive.filter((el) => el !== id);
+        setisactive([...isactivefilter]);
+      } else {
+        setisactive([...isactive, id]);
+      }
+    } else {
+      setisactive([id]);
+    }
+  };
+  const handlecheckbox = () => {
+    setcheckbox(!checkbox);
+  };
+  console.log(isactive);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="mainheading">
+        Allow multiple accordions to open?
+        <input
+          type="checkbox"
+          checked={checkbox}
+          onChange={handlecheckbox}
+        ></input>
+      </div>
+      <div className="content">
+        {questions.map((item) => (
+          <div className="contentmain">
+            <div className="contentspace">
+              {item.title}
+              {isactive.includes(item.id) ? (
+                <button onClick={() => handleclick(item.id)}>-</button>
+              ) : (
+                <button onClick={() => handleclick(item.id)}>+</button>
+              )}
+            </div>
+            {isactive.includes(item.id) && (
+              <div className="content2">{item.info}</div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
