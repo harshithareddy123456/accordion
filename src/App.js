@@ -15,7 +15,12 @@ function App() {
         setisactive([...isactive, id]);
       }
     } else {
-      setisactive([id]);
+      if (isactive.includes(id)) {
+        let isactivefilter = isactive.filter((el) => el !== id);
+        setisactive([...isactivefilter]);
+      } else {
+        setisactive([id]);
+      }
     }
   };
   const handlecheckbox = () => {
